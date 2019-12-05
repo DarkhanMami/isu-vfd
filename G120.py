@@ -44,7 +44,7 @@ class SinamicsG120():
         self.dst_ip_address = df.VFD_IP
         self.src_mac_address = self.get_src_mac_address()
         self.get_dst_mac_address(self.dst_ip_address)
-        self.vfd_shm = shm.SharedMemory()
+        # self.vfd_shm = shm.SharedMemory()
 
     @staticmethod
     def get_src_mac_address():
