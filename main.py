@@ -236,7 +236,7 @@ class VFDControl():
             if self.cnt >= self.LIST_CNT:
                 rl.debug('Current = %s', self.current)
                 rl.debug('Voltage = %s', self.voltage)
-                set_parameters_to_shmem(self.vfd_shmem, self.d, self.current, self.voltage)
+                # set_parameters_to_shmem(self.vfd_shmem, self.d, self.current, self.voltage)
                 self.voltage = []
                 self.current = []
                 self.cnt = 0
@@ -251,11 +251,11 @@ class VFDControl():
                 self.broken_belt_cnt = 0
                 self.moment = []
 
-            if self.vfd_shmem.is_alarm_stop():
-                self.g120.send_telegram(VFD_READY_COMMAND)
-                self.vfd_prev_speed = 0
+            # if self.vfd_shmem.is_alarm_stop():
+            #     self.g120.send_telegram(VFD_READY_COMMAND)
+            #     self.vfd_prev_speed = 0
 
-            vfd_mode_speed = self.vfd_shmem.get_vfd_mode_and_speed()
+            # vfd_mode_speed = self.vfd_shmem.get_vfd_mode_and_speed()
             rl.debug("Shared memory vfd = %s", vfd_mode_speed)
 
             if self.vfd_state['error_code']:
