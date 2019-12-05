@@ -5,8 +5,8 @@ from isu.utils.logconfig import configure_logging
 from isu.utils import common as c
 from isu.utils import defines as defines
 from isu.vfd.version import product_version
-from isu.vfd import defines as df
-from isu.vfd import G120 as sinamics
+import defines as df
+import G120 as sinamics
 from isu.vfd.shared_mem import SharedMemory as vfd_shm
 from isu.dynamometer.isu_alarms import AlarmsISU as alarm_shm
 from isu.dynamometer.shared_mem import SharedMemory as diagnostic_shmem
