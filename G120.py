@@ -7,10 +7,10 @@ import time
 import struct
 import profinet
 import subprocess
-from . import shared_mem as shm
+import shared_mem as shm
 from isu.utils.logconfig import configure_logging
-from . import defines as df
-from .profinet import (
+import defines as df
+from profinet import (
     DCERPC, ProfinetGetParametersRequest, ProfinetSetParametersRequest,
     ProfinetConnectionResponse, ProfinetParameter, CreateEPMRequest,
     CreateProfinetConnectionRequest, CreateProfinetWriteRequest,
