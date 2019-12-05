@@ -140,7 +140,7 @@ class VFDControl():
         self.DELTA_ALARM = read_delta_alarm_settings()
         # self.vfd_shmem = vfd_shm(shmemcls.MEM_WRITE)
         # self.alarm_shmem = alarm_shm(shmemcls.MEM_WRITE)
-        self.diagnoctic_shmem = diagnostic_shmem(shmemcls.MEM_WRITE)
+        # self.diagnoctic_shmem = diagnostic_shmem(shmemcls.MEM_WRITE)
         self.g120 = sinamics.SinamicsG120()
         self.g120.restart_network_iface()
         self.conf = self.g120.get_configuration()
