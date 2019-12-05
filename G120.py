@@ -368,7 +368,7 @@ class SinamicsG120():
                     res, data = CheckProfinetReadResponse(reply.load)
                     if res and data:
                         vfd_values = self.set_values_to_dict(GetProfinetParametersValue(data))
-                        self.vfd_shm.vfd_state(vfd_values)
+                        # self.vfd_shm.vfd_state(vfd_values)
                         rl.debug("Parameters value = %s", vfd_values)
 
                         return vfd_values
