@@ -145,7 +145,8 @@ class VFDControl():
         self.g120.restart_network_iface()
         self.conf = self.g120.get_configuration()
         if not self.conf:
-            set_alarm(self.alarm_shmem)
+            print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ no conf --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+            # set_alarm(self.alarm_shmem)
         self.g120.connect()
 
         self.vfd_prev_mode = -1
