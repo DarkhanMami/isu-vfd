@@ -2,7 +2,7 @@ import time
 from datetime import datetime, timedelta, date
 from isu import shmemcls
 from isu.utils.logconfig import configure_logging
-from . import defines as df
+import defines as df
 from isu.utils import defines as defines
 from isu.utils import common as c
 from isu.dynamometer.isu_alarms import AlarmsISU as alarm_shm
