@@ -431,6 +431,9 @@ def CreateProfinetConnectionRequest():
 
 
 def CreateProfinetWriteRequest(dcerpc_id, pnio_id, data, index=None):
+    print '------------------------'
+    print data
+    print '------------------------'
     length = len(data)
     if index is None:
         index = 0x002f
