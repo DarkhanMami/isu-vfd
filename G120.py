@@ -391,12 +391,18 @@ if __name__ == '__main__':
         print 'START'
         time.sleep(20)
         g120.set_rpn(8000)
+        g120.set_watchdog(0)
+        g120.set_priority(1)
         g120.send_telegram()
         time.sleep(30)
         g120.set_rpn(0x4000)
+        g120.set_watchdog(0)
+        g120.set_priority(1)
         g120.send_telegram()
         time.sleep(30)
         g120.stop()
+        g120.set_watchdog(0)
+        g120.set_priority(1)
         g120.send_telegram()
         print 'END'
 else:
