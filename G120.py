@@ -276,7 +276,6 @@ class SinamicsG120():
             self.rpm = rpm
 
         telegram = ProfinetTelegram(CW=self.cw, RPM=self.rpm)
-        print telegram
 
         rl.debug("cw = %s, rpm = %s", hex(self.cw), self.rpm)
 
@@ -383,7 +382,8 @@ class SinamicsG120():
 
 if __name__ == '__main__':
     rl = configure_logging(df.LOG_FILE_NAME)
-    g120 = SinamicsG120("192.168.1.240")
+    # g120 = SinamicsG120("192.168.1.240")
+    g120 = SinamicsG120()
     g120.get_configuration()
     g120.connect()
 
