@@ -276,6 +276,7 @@ class SinamicsG120():
             self.rpm = rpm
 
         telegram = ProfinetTelegram(CW=self.cw, RPM=self.rpm)
+        print telegram
 
         rl.debug("cw = %s, rpm = %s", hex(self.cw), self.rpm)
 
