@@ -166,6 +166,20 @@ class VFDControl():
         self.alarm_start = False
         self.vfd_state = {}
 
+
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ sleep 20 --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        time.sleep(20)
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ set_rpn(8000) --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        self.g120.set_rpn(8000)
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ sleep 20 --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        time.sleep(30)
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ set_rpn(4000) --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        self.g120.set_rpn(0x4000)
+        time.sleep(30)
+        self.g120.stop()
+
+
+
     def get_vfd_state(self):
         rl.debug('VFD getting state')
         self.vfd_state = self.g120.get_state()

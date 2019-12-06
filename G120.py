@@ -307,8 +307,6 @@ class SinamicsG120():
 
     @staticmethod
     def set_values_to_dict(data):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-        print data
         return od(zip(df.vfd_keys, data))
 
     def set_parameters(self, parameter, type_format, struct_format, value):
