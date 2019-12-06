@@ -167,8 +167,8 @@ class VFDControl():
         self.vfd_state = {}
 
 
-        self.g120.start()
-        self.g120.send_telegram()
+        # self.g120.start()
+        # self.g120.send_telegram()
         print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ sleep 20 --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         time.sleep(20)
         print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ set_rpn(8000) --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
