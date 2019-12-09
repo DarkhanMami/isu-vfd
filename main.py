@@ -169,15 +169,15 @@ class VFDControl():
 
         # self.g120.start()
         # self.g120.send_telegram()
-        set_auto_mode(self.g120)
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ sleep 20 --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-        time.sleep(20)
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ set_rpn(4000) --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-        self.g120.set_rpn(0x4000)
-        self.g120.send_telegram()
-        time.sleep(30)
-        self.g120.stop()
-        self.g120.send_telegram()
+        # set_auto_mode(self.g120)
+        # print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ sleep 20 --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        # time.sleep(20)
+        # print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ------ set_rpn(4000) --------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        # self.g120.set_rpn(0x4000)
+        # self.g120.send_telegram()
+        # time.sleep(30)
+        # self.g120.stop()
+        # self.g120.send_telegram()
 
 
 
@@ -240,11 +240,11 @@ class VFDControl():
                 if delta > self.DELTA_ALARM:
                     set_alarm(self.alarm_shmem)
         else:
-            self.alarm_start = False
-            self.alarm_shmem.remove_alarm(defines.ALARM_VFD)
+            # self.alarm_start = False
+            # self.alarm_shmem.remove_alarm(defines.ALARM_VFD)
 
-            if self.vfd_state['act_rpm'] == 0:
-                self.diagnoctic_shmem.cycles_per_min(0)
+            # if self.vfd_state['act_rpm'] == 0:
+            #     self.diagnoctic_shmem.cycles_per_min(0)
 
             rl.debug('cnt = %s', self.cnt)
             self.current.append(self.vfd_state["act_cur"])
@@ -262,49 +262,53 @@ class VFDControl():
             self.broken_belt_cnt += 1
 
             rl.debug("BROKEN_BELT_CNT = %s", self.broken_belt_cnt)
-            if self.broken_belt_cnt >= self.BROKEN_BELT_MAX_CNT:
-                check_alarm_broken_belt(self.moment, self.alarm_shmem)
-                self.broken_belt_cnt = 0
-                self.moment = []
+            # if self.broken_belt_cnt >= self.BROKEN_BELT_MAX_CNT:
+            #     check_alarm_broken_belt(self.moment, self.alarm_shmem)
+            #     self.broken_belt_cnt = 0
+            #     self.moment = []
 
             # if self.vfd_shmem.is_alarm_stop():
             #     self.g120.send_telegram(VFD_READY_COMMAND)
             #     self.vfd_prev_speed = 0
 
             # vfd_mode_speed = self.vfd_shmem.get_vfd_mode_and_speed()
-            rl.debug("Shared memory vfd = %s", vfd_mode_speed)
+            # rl.debug("Shared memory vfd = %s", vfd_mode_speed)
 
-            if self.vfd_state['error_code']:
-                self.check_error_code()
+            # if self.vfd_state['error_code']:
+            #     self.check_error_code()
 
-            if vfd_mode_speed["vfd_working_mode"] == VFD_MANUAL_MODE:
-                if self.vfd_prev_mode != VFD_MANUAL_MODE:
-                    self.alarm_shmem.reset_alarm()
-                    self.emergency_stop = False
-                    stop_vfd_auto_mode(self.g120)
-                    set_manual_mode(self.g120)
+            # if vfd_mode_speed["vfd_working_mode"] == VFD_MANUAL_MODE:
+            #     if self.vfd_prev_mode != VFD_MANUAL_MODE:
+            #         self.alarm_shmem.reset_alarm()
+            #         self.emergency_stop = False
+            #         stop_vfd_auto_mode(self.g120)
+            #         set_manual_mode(self.g120)
 
-                self.vfd_prev_mode = VFD_MANUAL_MODE
-                self.vfd_prev_speed = 0
-            elif vfd_mode_speed["vfd_working_mode"] == VFD_AUTO_MODE:
-                if self.vfd_prev_mode != VFD_AUTO_MODE:
-                    set_auto_mode(self.g120)
+            #     self.vfd_prev_mode = VFD_MANUAL_MODE
+            #     self.vfd_prev_speed = 0
+            # elif vfd_mode_speed["vfd_working_mode"] == VFD_AUTO_MODE:
+            #     if self.vfd_prev_mode != VFD_AUTO_MODE:
+            #         set_auto_mode(self.g120)
 
-                self.vfd_prev_mode = VFD_AUTO_MODE
-                stop_vfd = self.alarm_shmem.get_alarm_vfd_state()
-                rl.debug("STOP VFD BY ALARM = %s", stop_vfd)
-                if stop_vfd:
-                    stop_vfd_auto_mode(self.g120)
-                    self.vfd_prev_speed = 0
-                else:
-                    if self.vfd_prev_speed != vfd_mode_speed["current_speed"]:
-                        if vfd_mode_speed["current_speed"] == 0:
-                            self.g120.stop()
-                        else:
-                            self.g120.set_rpn(vfd_mode_speed["current_speed"])
-                        self.vfd_prev_speed = vfd_mode_speed["current_speed"]
+            #     self.vfd_prev_mode = VFD_AUTO_MODE
+            #     stop_vfd = self.alarm_shmem.get_alarm_vfd_state()
+            #     rl.debug("STOP VFD BY ALARM = %s", stop_vfd)
+            #     if stop_vfd:
+            #         stop_vfd_auto_mode(self.g120)
+            #         self.vfd_prev_speed = 0
+            #     else:
+            #         if self.vfd_prev_speed != vfd_mode_speed["current_speed"]:
+            #             if vfd_mode_speed["current_speed"] == 0:
+            #                 self.g120.stop()
+            #             else:
+            #                 self.g120.set_rpn(vfd_mode_speed["current_speed"])
+            #             self.vfd_prev_speed = vfd_mode_speed["current_speed"]
 
-                    self.g120.send_telegram()
+            #         self.g120.send_telegram()
+
+            print "------------------------------start-------------------------------"
+            self.g120.set_rpn(200)
+            self.g120.send_telegram()
 
             rl.debug("Current working mode = %s", self.vfd_prev_mode)
 
