@@ -308,6 +308,7 @@ class VFDControl():
 
             print "------------------------------start-------------------------------"
             self.g120.set_rpn(50)
+            self.g120.stop()
             self.g120.send_telegram()
 
             rl.debug("Current working mode = %s", self.vfd_prev_mode)
@@ -336,6 +337,7 @@ if __name__ == "__main__":
             if i == 0:
                 rl.debug('Get VFD state')
                 vfd.get_vfd_state()
+                break
             if h.interrupted:
                 rl.debug('Got SIGINT. Stopping threads...')
                 break
