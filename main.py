@@ -17,6 +17,11 @@ import time
 from isu.coordinator.constants import VFD_PID
 from isu.utils.pidfile import PidFile
 
+from multiprocessing import Process
+import socket
+import requests
+import json
+
 VFD_AUTO_MODE = 0
 VFD_MANUAL_MODE = 1
 VFD_REMOTE_MODE = 2
@@ -308,7 +313,7 @@ class VFDControl():
 
             print "------------------------------start-------------------------------"
             self.g120.set_rpn(50)
-            self.g120.stop()
+            # self.g120.stop()
             self.g120.send_telegram()
 
             rl.debug("Current working mode = %s", self.vfd_prev_mode)
@@ -324,13 +329,7 @@ def get_iface_settings():
         rl.error("I/O error({0}): {1}".format(e.errno, e.strerror))
         pass
 
-
-if __name__ == "__main__":
-    rl = configure_logging(df.LOG_FILE_NAME)
-    rl.info('Version = %s' % product_version())
-    get_iface_settings()
-    vfd = VFDControl()
-
+def start_checking_state(vfd):
     with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
         for i in cycle(range(10)):
             time.sleep(0.1)
@@ -341,3 +340,55 @@ if __name__ == "__main__":
             if h.interrupted:
                 rl.debug('Got SIGINT. Stopping threads...')
                 break
+
+def start_socket_server():
+    localIP = "0.0.0.0"
+    localPort = 6666
+    bufferSize = 1024
+
+    UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+    UDPServerSocket.bind((localIP, localPort))
+
+    while (True):
+        bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+        message = bytesAddressPair[0]
+        address = bytesAddressPair[1]
+        print message
+        print address
+        data = str(message.decode("utf-8")).split(' ')
+        post_msg = dict()
+        post_msg['data'] = str(message.decode("utf-8"))
+        if 'pet' in data[0]:
+            # headers = {'Content-Type': 'application/json'}
+            # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
+            # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+            msgFromServer = ">pet<"
+            bytesToSend = str.encode(msgFromServer)
+            UDPServerSocket.sendto(bytesToSend, address)
+
+            # clientIP = "Client IP Address:{}".format(address)
+        elif 'skv' in data[0]:
+            # headers = {'Content-Type': 'application/json'}
+            # url = 'http://91.245.226.161:4000/api/v1/skv_data/'
+            # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+            msgFromServer = ">skv<"
+            bytesToSend = str.encode(msgFromServer)
+            UDPServerSocket.sendto(bytesToSend, address)
+        else:
+            msgFromServer = ">error<"
+            bytesToSend = str.encode(msgFromServer)
+            UDPServerSocket.sendto(bytesToSend, address)
+
+if __name__ == "__main__":
+    rl = configure_logging(df.LOG_FILE_NAME)
+    rl.info('Version = %s' % product_version())
+    get_iface_settings()
+    vfd = VFDControl()
+    # p1 = Process(target=start_checking_state)
+    # p1.start()
+    p2 = Process(target=start_socket_server)
+    p2.start()
+    # p1.join()
+    p2.join()
+
+    
