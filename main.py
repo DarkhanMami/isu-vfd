@@ -341,7 +341,7 @@ def start_checking_state(vfd):
                 rl.debug('Got SIGINT. Stopping threads...')
                 break
 
-def start_socket_server():
+def start_socket_server(vfd):
     localIP = "0.0.0.0"
     localPort = 6666
     bufferSize = 1024
@@ -358,22 +358,35 @@ def start_socket_server():
         data = str(message.decode("utf-8")).split(' ')
         post_msg = dict()
         post_msg['data'] = str(message.decode("utf-8"))
-        if 'pet' in data[0]:
+        if 'start' in data[0]:
+            vfd.g120.set_rpn(100)
+            vfd.g120.send_telegram()
             # headers = {'Content-Type': 'application/json'}
             # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
             # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
-            msgFromServer = ">pet<"
-            bytesToSend = str.encode(msgFromServer)
-            UDPServerSocket.sendto(bytesToSend, address)
+            # msgFromServer = ">pet<"
+            # bytesToSend = str.encode(msgFromServer)
+            # UDPServerSocket.sendto(bytesToSend, address)
 
             # clientIP = "Client IP Address:{}".format(address)
-        elif 'skv' in data[0]:
+        elif 'stop' in data[0]:
+            vfd.g120.stop()
+            vfd.g120.send_telegram()
+            # headers = {'Content-Type': 'application/json'}
+            # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
+            # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+            # msgFromServer = ">pet<"
+            # bytesToSend = str.encode(msgFromServer)
+            # UDPServerSocket.sendto(bytesToSend, address)
+        elif 'set_rpn' in data[0]:
+            vfd.g120.set_rpn(int(data[1]))
+            vfd.g120.send_telegram()
             # headers = {'Content-Type': 'application/json'}
             # url = 'http://91.245.226.161:4000/api/v1/skv_data/'
             # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
-            msgFromServer = ">skv<"
-            bytesToSend = str.encode(msgFromServer)
-            UDPServerSocket.sendto(bytesToSend, address)
+            # msgFromServer = ">skv<"
+            # bytesToSend = str.encode(msgFromServer)
+            # UDPServerSocket.sendto(bytesToSend, address)
         else:
             msgFromServer = ">error<"
             bytesToSend = str.encode(msgFromServer)
@@ -387,7 +400,7 @@ if __name__ == "__main__":
     # p1 = Process(target=start_checking_state)
     # p1.start()
     p2 = Process(target=start_socket_server)
-    p2.start()
+    p2.start(vfd)
     # p1.join()
     p2.join()
 
