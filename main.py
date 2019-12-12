@@ -313,9 +313,9 @@ class VFDControl():
             #         self.g120.send_telegram()
 
             print "------------------------------start-------------------------------"
-            self.g120.set_rpn(50)
-            # self.g120.stop()
-            self.g120.send_telegram()
+            # self.g120.set_rpn(50)
+            # # self.g120.stop()
+            # self.g120.send_telegram()
 
             rl.debug("Current working mode = %s", self.vfd_prev_mode)
 
