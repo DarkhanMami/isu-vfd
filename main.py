@@ -356,10 +356,10 @@ def start_socket_server():
     with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
         while (True):
             print '------------------------------------------------------------------------------------------------------'
-                print 'start'
-                vfd_serv.get_vfd_state()
-                print 'end'
-                print '--------------------------------------------------------------------------------------------'
+            print 'start'
+            vfd_serv.get_vfd_state()
+            print 'end'
+            print '--------------------------------------------------------------------------------------------'
 
             bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
 
