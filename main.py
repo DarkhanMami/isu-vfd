@@ -411,7 +411,7 @@ if __name__ == "__main__":
             time.sleep(0.1)
             if i == 0:
                 rl.debug('Get VFD state')
-                vfd_serv.get_vfd_state()
+                vfd.get_vfd_state()
                 break
             if h.interrupted:
                 rl.debug('Got SIGINT. Stopping threads...')
