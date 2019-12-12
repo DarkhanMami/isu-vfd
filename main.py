@@ -26,6 +26,7 @@ VFD_AUTO_MODE = 0
 VFD_MANUAL_MODE = 1
 VFD_REMOTE_MODE = 2
 VFD_READY_COMMAND = 0x047e
+vfd_serv = None
 
 
 def set_manual_mode(g120):
@@ -359,8 +360,8 @@ def start_socket_server(vfd):
         post_msg = dict()
         post_msg['data'] = str(message.decode("utf-8"))
         if 'start' in data[0]:
-            vfd.g120.set_rpn(100)
-            vfd.g120.send_telegram()
+            vfd_serv.g120.set_rpn(100)
+            vfd_serv.g120.send_telegram()
             # headers = {'Content-Type': 'application/json'}
             # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
             # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
@@ -370,8 +371,8 @@ def start_socket_server(vfd):
 
             # clientIP = "Client IP Address:{}".format(address)
         elif 'stop' in data[0]:
-            vfd.g120.stop()
-            vfd.g120.send_telegram()
+            vfd_serv.g120.stop()
+            vfd_serv.g120.send_telegram()
             # headers = {'Content-Type': 'application/json'}
             # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
             # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
@@ -379,8 +380,8 @@ def start_socket_server(vfd):
             # bytesToSend = str.encode(msgFromServer)
             # UDPServerSocket.sendto(bytesToSend, address)
         elif 'set_rpn' in data[0]:
-            vfd.g120.set_rpn(int(data[1]))
-            vfd.g120.send_telegram()
+            vfd_serv.g120.set_rpn(int(data[1]))
+            vfd_serv.g120.send_telegram()
             # headers = {'Content-Type': 'application/json'}
             # url = 'http://91.245.226.161:4000/api/v1/skv_data/'
             # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
@@ -397,6 +398,7 @@ if __name__ == "__main__":
     rl.info('Version = %s' % product_version())
     get_iface_settings()
     vfd = VFDControl()
+    vfd_serv = vfd
     # p1 = Process(target=start_checking_state)
     # p1.start()
     p2 = Process(target=start_socket_server, args=(vfd,))
