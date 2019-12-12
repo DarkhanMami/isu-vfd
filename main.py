@@ -352,7 +352,8 @@ def start_socket_server():
 
     while (True):
         bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-        # vfd_serv.get_vfd_state()
+        with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
+            vfd_serv.get_vfd_state()
         message = bytesAddressPair[0]
         address = bytesAddressPair[1]
         print message
@@ -401,11 +402,11 @@ if __name__ == "__main__":
     get_iface_settings()
     vfd = VFDControl()
     vfd_serv = vfd
-    p1 = Process(target=start_checking_state)
-    p1.start()
+    # p1 = Process(target=start_checking_state)
+    # p1.start()
     p2 = Process(target=start_socket_server)
     p2.start()
-    p1.join()
+    # p1.join()
     p2.join()
 
     
