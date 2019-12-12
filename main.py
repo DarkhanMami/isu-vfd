@@ -190,6 +190,9 @@ class VFDControl():
     def get_vfd_state(self):
         rl.debug('VFD getting state')
         self.vfd_state = self.g120.get_state()
+        print '------------------------------------------------------------------------------------------------------'
+        print self.vfd_state
+        print '------------------------------------------------------------------------------------------------------'
         rl.debug('VFD checking state')
         self.check_vfd_state()
 
