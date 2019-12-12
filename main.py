@@ -400,11 +400,20 @@ if __name__ == "__main__":
     get_iface_settings()
     vfd = VFDControl()
     vfd_serv = vfd
-    p1 = Process(target=start_checking_state)
-    p1.start()
-    # p2 = Process(target=start_socket_server)
-    # p2.start()
-    p1.join()
-    # p2.join()
+    # p1 = Process(target=start_checking_state)
+    # p1.start()
+    p2 = Process(target=start_socket_server)
+    p2.start()
+    # p1.join()
+    p2.join()
+    with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
+        for i in cycle(range(10)):
+            time.sleep(0.1)
+            if i == 0:
+                rl.debug('Get VFD state')
+                vfd_serv.get_vfd_state()
+                break
+            if h.interrupted:
+                rl.debug('Got SIGINT. Stopping threads...')
 
     
