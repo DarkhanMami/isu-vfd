@@ -413,12 +413,80 @@ if __name__ == "__main__":
     rl.info('Version = %s' % product_version())
     get_iface_settings()
     vfd = VFDControl()
-    vfd_serv = vfd
+    
+    localIP = "0.0.0.0"
+    localPort = 6666
+    bufferSize = 1024
+
+    UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+    UDPServerSocket.bind((localIP, localPort))
+
+    with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
+        for i in cycle(range(10)):
+            time.sleep(0.1)
+            if i == 0:
+                rl.debug('Get VFD state')
+                vfd.get_vfd_state()
+
+                bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+
+                message = bytesAddressPair[0]
+                address = bytesAddressPair[1]
+                print message
+                print address
+                data = str(message.decode("utf-8")).split(' ')
+                post_msg = dict()
+                post_msg['data'] = str(message.decode("utf-8"))
+                print data
+                if 'start' in data[0]:
+                    vfd.g120.set_rpn(100)
+                    vfd.g120.send_telegram()
+                    # headers = {'Content-Type': 'application/json'}
+                    # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
+                    # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+                    # msgFromServer = ">pet<"
+                    # bytesToSend = str.encode(msgFromServer)
+                    # UDPServerSocket.sendto(bytesToSend, address)
+
+                    # clientIP = "Client IP Address:{}".format(address)
+                elif 'stop' in data[0]:
+                    vfd.g120.stop()
+                    vfd.g120.send_telegram()
+                    # headers = {'Content-Type': 'application/json'}
+                    # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
+                    # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+                    # msgFromServer = ">pet<"
+                    # bytesToSend = str.encode(msgFromServer)
+                    # UDPServerSocket.sendto(bytesToSend, address)
+                elif 'set_rpn' in data[0]:
+                    vfd.g120.set_rpn(int(data[1]))
+                    vfd.g120.send_telegram()
+                    # headers = {'Content-Type': 'application/json'}
+                    # url = 'http://91.245.226.161:4000/api/v1/skv_data/'
+                    # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+                    # msgFromServer = ">skv<"
+                    # bytesToSend = str.encode(msgFromServer)
+                    # UDPServerSocket.sendto(bytesToSend, address)
+                else:
+                    msgFromServer = ">error<"
+                    bytesToSend = str.encode(msgFromServer)
+                    UDPServerSocket.sendto(bytesToSend, address)
+
+
+
+                # break
+            if h.interrupted:
+                rl.debug('Got SIGINT. Stopping threads...')
+                break
+
+
+
+    # vfd_serv = vfd
     # p1 = Process(target=start_checking_state)
     # p1.start()
-    p2 = Process(target=start_socket_server)
-    p2.start()
+    # p2 = Process(target=start_socket_server)
+    # p2.start()
     # p1.join()
-    p2.join()
+    # p2.join()
 
     
