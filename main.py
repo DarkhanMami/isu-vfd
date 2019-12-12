@@ -402,7 +402,7 @@ if __name__ == "__main__":
     vfd_serv = vfd
     p1 = Process(target=start_checking_state)
     p1.start()
-    p2 = Process(target=start_socket_server, args=(vfd,))
+    p2 = Process(target=start_socket_server)
     p2.start()
     p1.join()
     p2.join()
