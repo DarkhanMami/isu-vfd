@@ -352,7 +352,9 @@ def start_socket_server():
 
     while (True):
         bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+        print '---------------------------------------------------------'
         with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
+            print 'start'
             vfd_serv.get_vfd_state()
         message = bytesAddressPair[0]
         address = bytesAddressPair[1]
