@@ -351,11 +351,15 @@ def start_socket_server():
     UDPServerSocket.bind((localIP, localPort))
 
     while (True):
-        bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-        print '---------------------------------------------------------'
+        print '------------------------------------------------------------------------------------------------------'
         with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
             print 'start'
             vfd_serv.get_vfd_state()
+            print 'end'
+            print '--------------------------------------------------------------------------------------------'
+
+        bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+
         message = bytesAddressPair[0]
         address = bytesAddressPair[1]
         print message
