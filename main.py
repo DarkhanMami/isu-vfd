@@ -313,9 +313,9 @@ class VFDControl():
             #         self.g120.send_telegram()
 
             print "------------------------------start-------------------------------"
-            self.g120.set_rpn(50)
-            # self.g120.stop()
-            self.g120.send_telegram()
+            # self.g120.set_rpn(50)
+            # # self.g120.stop()
+            # self.g120.send_telegram()
 
             rl.debug("Current working mode = %s", self.vfd_prev_mode)
 
@@ -337,7 +337,7 @@ def start_checking_state():
             if i == 0:
                 rl.debug('Get VFD state')
                 vfd_serv.get_vfd_state()
-                break
+                # break
             if h.interrupted:
                 rl.debug('Got SIGINT. Stopping threads...')
                 break
@@ -360,6 +360,7 @@ def start_socket_server():
         data = str(message.decode("utf-8")).split(' ')
         post_msg = dict()
         post_msg['data'] = str(message.decode("utf-8"))
+        print data
         if 'start' in data[0]:
             vfd_serv.g120.set_rpn(100)
             vfd_serv.g120.send_telegram()
@@ -400,20 +401,11 @@ if __name__ == "__main__":
     get_iface_settings()
     vfd = VFDControl()
     vfd_serv = vfd
-    # p1 = Process(target=start_checking_state)
-    # p1.start()
-    # p2 = Process(target=start_socket_server)
-    # p2.start()
-    # p1.join()
-    # p2.join()
-    with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
-        for i in cycle(range(10)):
-            time.sleep(0.1)
-            if i == 0:
-                rl.debug('Get VFD state')
-                vfd.get_vfd_state()
-                break
-            if h.interrupted:
-                rl.debug('Got SIGINT. Stopping threads...')
+    p1 = Process(target=start_checking_state)
+    p1.start()
+    p2 = Process(target=start_socket_server)
+    p2.start()
+    p1.join()
+    p2.join()
 
     
