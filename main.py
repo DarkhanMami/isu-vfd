@@ -353,57 +353,57 @@ def start_socket_server():
     UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
     UDPServerSocket.bind((localIP, localPort))
 
-    while (True):
-        print '------------------------------------------------------------------------------------------------------'
-        with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
-            print 'start'
-            vfd_serv.get_vfd_state()
-            print 'end'
-            print '--------------------------------------------------------------------------------------------'
+    with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
+        while (True):
+            print '------------------------------------------------------------------------------------------------------'
+                print 'start'
+                vfd_serv.get_vfd_state()
+                print 'end'
+                print '--------------------------------------------------------------------------------------------'
 
-        bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+            bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
 
-        message = bytesAddressPair[0]
-        address = bytesAddressPair[1]
-        print message
-        print address
-        data = str(message.decode("utf-8")).split(' ')
-        post_msg = dict()
-        post_msg['data'] = str(message.decode("utf-8"))
-        print data
-        if 'start' in data[0]:
-            vfd_serv.g120.set_rpn(100)
-            vfd_serv.g120.send_telegram()
-            # headers = {'Content-Type': 'application/json'}
-            # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
-            # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
-            # msgFromServer = ">pet<"
-            # bytesToSend = str.encode(msgFromServer)
-            # UDPServerSocket.sendto(bytesToSend, address)
+            message = bytesAddressPair[0]
+            address = bytesAddressPair[1]
+            print message
+            print address
+            data = str(message.decode("utf-8")).split(' ')
+            post_msg = dict()
+            post_msg['data'] = str(message.decode("utf-8"))
+            print data
+            if 'start' in data[0]:
+                vfd_serv.g120.set_rpn(100)
+                vfd_serv.g120.send_telegram()
+                # headers = {'Content-Type': 'application/json'}
+                # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
+                # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+                # msgFromServer = ">pet<"
+                # bytesToSend = str.encode(msgFromServer)
+                # UDPServerSocket.sendto(bytesToSend, address)
 
-            # clientIP = "Client IP Address:{}".format(address)
-        elif 'stop' in data[0]:
-            vfd_serv.g120.stop()
-            vfd_serv.g120.send_telegram()
-            # headers = {'Content-Type': 'application/json'}
-            # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
-            # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
-            # msgFromServer = ">pet<"
-            # bytesToSend = str.encode(msgFromServer)
-            # UDPServerSocket.sendto(bytesToSend, address)
-        elif 'set_rpn' in data[0]:
-            vfd_serv.g120.set_rpn(int(data[1]))
-            vfd_serv.g120.send_telegram()
-            # headers = {'Content-Type': 'application/json'}
-            # url = 'http://91.245.226.161:4000/api/v1/skv_data/'
-            # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
-            # msgFromServer = ">skv<"
-            # bytesToSend = str.encode(msgFromServer)
-            # UDPServerSocket.sendto(bytesToSend, address)
-        else:
-            msgFromServer = ">error<"
-            bytesToSend = str.encode(msgFromServer)
-            UDPServerSocket.sendto(bytesToSend, address)
+                # clientIP = "Client IP Address:{}".format(address)
+            elif 'stop' in data[0]:
+                vfd_serv.g120.stop()
+                vfd_serv.g120.send_telegram()
+                # headers = {'Content-Type': 'application/json'}
+                # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
+                # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+                # msgFromServer = ">pet<"
+                # bytesToSend = str.encode(msgFromServer)
+                # UDPServerSocket.sendto(bytesToSend, address)
+            elif 'set_rpn' in data[0]:
+                vfd_serv.g120.set_rpn(int(data[1]))
+                vfd_serv.g120.send_telegram()
+                # headers = {'Content-Type': 'application/json'}
+                # url = 'http://91.245.226.161:4000/api/v1/skv_data/'
+                # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
+                # msgFromServer = ">skv<"
+                # bytesToSend = str.encode(msgFromServer)
+                # UDPServerSocket.sendto(bytesToSend, address)
+            else:
+                msgFromServer = ">error<"
+                bytesToSend = str.encode(msgFromServer)
+                UDPServerSocket.sendto(bytesToSend, address)
 
 if __name__ == "__main__":
     rl = configure_logging(df.LOG_FILE_NAME)
@@ -411,11 +411,11 @@ if __name__ == "__main__":
     get_iface_settings()
     vfd = VFDControl()
     vfd_serv = vfd
-    p1 = Process(target=start_checking_state)
-    p1.start()
-    # p2 = Process(target=start_socket_server)
-    # p2.start()
-    p1.join()
-    # p2.join()
+    # p1 = Process(target=start_checking_state)
+    # p1.start()
+    p2 = Process(target=start_socket_server)
+    p2.start()
+    # p1.join()
+    p2.join()
 
     
