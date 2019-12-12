@@ -330,19 +330,19 @@ def get_iface_settings():
         rl.error("I/O error({0}): {1}".format(e.errno, e.strerror))
         pass
 
-def start_checking_state(vfd):
+def start_checking_state():
     with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
         for i in cycle(range(10)):
             time.sleep(0.1)
             if i == 0:
                 rl.debug('Get VFD state')
-                vfd.get_vfd_state()
+                vfd_serv.get_vfd_state()
                 break
             if h.interrupted:
                 rl.debug('Got SIGINT. Stopping threads...')
                 break
 
-def start_socket_server(vfd):
+def start_socket_server():
     localIP = "0.0.0.0"
     localPort = 6666
     bufferSize = 1024
@@ -352,7 +352,7 @@ def start_socket_server(vfd):
 
     while (True):
         bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-        vfd_serv.get_vfd_state()
+        # vfd_serv.get_vfd_state()
         message = bytesAddressPair[0]
         address = bytesAddressPair[1]
         print message
@@ -400,11 +400,11 @@ if __name__ == "__main__":
     get_iface_settings()
     vfd = VFDControl()
     vfd_serv = vfd
-    # p1 = Process(target=start_checking_state)
-    # p1.start()
+    p1 = Process(target=start_checking_state)
+    p1.start()
     p2 = Process(target=start_socket_server, args=(vfd,))
     p2.start()
-    # p1.join()
+    p1.join()
     p2.join()
 
     
