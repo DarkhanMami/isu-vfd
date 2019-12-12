@@ -352,6 +352,7 @@ def start_socket_server(vfd):
 
     while (True):
         bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+        vfd_serv.get_vfd_state()
         message = bytesAddressPair[0]
         address = bytesAddressPair[1]
         print message
