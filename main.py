@@ -413,13 +413,14 @@ if __name__ == "__main__":
                 rl.debug('Got SIGINT. Stopping threads...')
                 break
 
+            bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
+
             get_iface_settings()
             vfd = VFDControl()
 
             rl.debug('Get VFD state')
             vfd.get_vfd_state()
 
-            bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
 
             message = bytesAddressPair[0]
             address = bytesAddressPair[1]
