@@ -396,8 +396,8 @@ def start_socket_server():
 if __name__ == "__main__":
     rl = configure_logging(df.LOG_FILE_NAME)
     rl.info('Version = %s' % product_version())
-    get_iface_settings()
-    vfd = VFDControl()
+    # get_iface_settings()
+    # vfd = VFDControl()
 
     localIP = "0.0.0.0"
     localPort = 6666
@@ -412,6 +412,9 @@ if __name__ == "__main__":
             if h.interrupted:
                 rl.debug('Got SIGINT. Stopping threads...')
                 break
+
+            get_iface_settings()
+            vfd = VFDControl()
 
             rl.debug('Get VFD state')
             vfd.get_vfd_state()
