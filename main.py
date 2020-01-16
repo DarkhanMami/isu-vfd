@@ -338,16 +338,16 @@ def start_getting_state():
             print '******************************'
             print 'start_getting_state'
             print '******************************'
-            print vfd.g120.get_state()
+            # print vfd.g120.get_state()
             # vfd = VFDControl()
-            # for i in range(10):
-            #     print '******************************'
-            #     print i
-            #     print '******************************'
-            #     time.sleep(0.04)
-            #     print datetime.now()
-            #     print '-------------'
-            #     print vfd.g120.get_state()['active_power']
+            for i in range(5):
+                print '******************************'
+                print i
+                print '******************************'
+                time.sleep(0.04)
+                print datetime.now()
+                print '-------------'
+                print vfd.g120.get_state()['active_power']
 
 def start_socket_server():
     rl = configure_logging(df.LOG_FILE_NAME)
@@ -372,6 +372,8 @@ def start_socket_server():
 
             # get_iface_settings()
             # vfd = VFDControl()
+
+            vfd.g120.connect()
 
             # rl.debug('Get VFD state')
             # vfd.get_vfd_state()
