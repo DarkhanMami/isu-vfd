@@ -167,6 +167,11 @@ class VFDControl():
 
         self.current = []
         self.voltage = []
+        
+
+        self.power = []
+
+
         self.emergency_stop = False
         self.alarm_start_time = 0
         self.alarm_start = False
@@ -398,6 +403,7 @@ if __name__ == "__main__":
     rl.info('Version = %s' % product_version())
     # get_iface_settings()
     # vfd = VFDControl()
+    power = []
 
     localIP = "0.0.0.0"
     localPort = 6666
@@ -418,8 +424,8 @@ if __name__ == "__main__":
             get_iface_settings()
             vfd = VFDControl()
 
-            rl.debug('Get VFD state')
-            vfd.get_vfd_state()
+            # rl.debug('Get VFD state')
+            # vfd.get_vfd_state()
 
 
             message = bytesAddressPair[0]
@@ -467,6 +473,17 @@ if __name__ == "__main__":
                 # msgFromServer = ">skv<"
                 # bytesToSend = str.encode(msgFromServer)
                 # UDPServerSocket.sendto(bytesToSend, address)
+            elif 'get_power' in data[0]:
+                print '******************************'
+                print 'get_power'
+                print '******************************'
+                for i in range(2):
+                    print '******************************'
+                    print i
+                    print '******************************'
+                    time.sleep(0.05)
+                    print vfd.g120.get_state()
+                
             else:
                 msgFromServer = ">error<"
                 bytesToSend = str.encode(msgFromServer)
