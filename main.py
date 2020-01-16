@@ -333,7 +333,8 @@ def start_getting_state():
         time.sleep(0.1)
         sec = int(datetime.now().strftime('%S'))
         if sec == 50:
-            vfd.g120.connect()
+            if not vfd.g120.get_state():
+                vfd.g120.connect()
         if sec == 0:
             print '******************************'
             print 'start_getting_state'
@@ -373,7 +374,8 @@ def start_socket_server():
             # get_iface_settings()
             # vfd = VFDControl()
 
-            vfd.g120.connect()
+            if not vfd.g120.get_state():
+                vfd.g120.connect()
 
             # rl.debug('Get VFD state')
             # vfd.get_vfd_state()
