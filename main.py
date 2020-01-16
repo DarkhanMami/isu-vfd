@@ -338,6 +338,8 @@ def start_getting_state():
                 print i
                 print '******************************'
                 time.sleep(0.04)
+                print datetime.now()
+                print '-------------'
                 print vfd.g120.get_state()['active_power']
 
 def start_socket_server():
