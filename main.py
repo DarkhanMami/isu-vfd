@@ -28,7 +28,7 @@ VFD_AUTO_MODE = 0
 VFD_MANUAL_MODE = 1
 VFD_REMOTE_MODE = 2
 VFD_READY_COMMAND = 0x047e
-vfd_serv = None
+vfd = None
 
 
 def set_manual_mode(g120):
@@ -332,7 +332,7 @@ def start_getting_state():
             print '******************************'
             print 'start_getting_state'
             print '******************************'
-            vfd = VFDControl()
+            # vfd = VFDControl()
             for i in range(10):
                 print '******************************'
                 print i
@@ -363,8 +363,8 @@ def start_socket_server():
 
             bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
 
-            get_iface_settings()
-            vfd = VFDControl()
+            # get_iface_settings()
+            # vfd = VFDControl()
 
             # rl.debug('Get VFD state')
             # vfd.get_vfd_state()
@@ -432,6 +432,7 @@ def start_socket_server():
                 UDPServerSocket.sendto(bytesToSend, address)
 
 if __name__ == "__main__":
+    vfd = VFDControl()
     # rl = configure_logging(df.LOG_FILE_NAME)
     # rl.info('Version = %s' % product_version())
     # # get_iface_settings()
