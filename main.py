@@ -324,6 +324,10 @@ def get_iface_settings():
         rl.error("I/O error({0}): {1}".format(e.errno, e.strerror))
         pass
 
+
+vfd = VFDControl()
+
+
 def start_getting_state():
     while(True):
         time.sleep(0.1)
@@ -430,9 +434,6 @@ def start_socket_server():
                 msgFromServer = ">error<"
                 bytesToSend = str.encode(msgFromServer)
                 UDPServerSocket.sendto(bytesToSend, address)
-
-
-vfd = VFDControl()
 
 if __name__ == "__main__":
     # rl = configure_logging(df.LOG_FILE_NAME)
