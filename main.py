@@ -336,7 +336,7 @@ def start_getting_state():
             print '******************************'
             print 'start_getting_state'
             print '******************************'
-            print vfd
+            print vfd.g120
             # vfd = VFDControl()
             # for i in range(10):
             #     print '******************************'
