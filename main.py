@@ -477,12 +477,12 @@ if __name__ == "__main__":
                 print '******************************'
                 print 'get_power'
                 print '******************************'
-                for i in range(2):
+                for i in range(10):
                     print '******************************'
                     print i
                     print '******************************'
                     time.sleep(0.05)
-                    print vfd.g120.get_state()
+                    print vfd.g120.get_state()['active_power']
                 
             else:
                 msgFromServer = ">error<"
