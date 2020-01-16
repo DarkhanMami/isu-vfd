@@ -326,13 +326,13 @@ def get_iface_settings():
         pass
 
 def start_getting_state():
-    print '******************************'
-    print 'start_getting_state'
-    print '******************************'
     vfd = VFDControl()
     while(True):
-        time = int(datetime.now().strftime('%S'))
-        if time == 0:
+        sec = int(datetime.now().strftime('%S'))
+        if sec == 0:
+            print '******************************'
+            print 'start_getting_state'
+            print '******************************'
             for i in range(10):
                 print '******************************'
                 print i
