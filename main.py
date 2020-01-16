@@ -332,7 +332,7 @@ def start_getting_state():
     while(True):
         time.sleep(0.1)
         sec = int(datetime.now().strftime('%S'))
-        if sec == 55:
+        if sec == 50:
             vfd.g120.connect()
         if sec == 0:
             print '******************************'
