@@ -337,7 +337,7 @@ def start_getting_state():
             if not vfd.g120.get_state():
                 vfd.g120.connect()
         if sec == 0:
-            file_name = '/var/isu/vfd/' + datetime.now().strftime("%Y_%m_%d, %H:%M:%S") + '.vfd'
+            file_name = '/var/isu/vfd/' + datetime.now().strftime("%Y_%m_%d %H:%M:%S") + '.vfd'
             print '******************************'
             print 'start_getting_state'
             print '******************************'
