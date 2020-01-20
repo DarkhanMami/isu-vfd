@@ -169,8 +169,9 @@ class VFDControl():
         self.current = []
         self.voltage = []
         
-
-        self.power = []
+        self.power_data = {}
+        self.power_data['power'] = []
+        self.power_data['power_time'] = []
 
 
         self.emergency_stop = False
@@ -336,19 +337,20 @@ def start_getting_state():
             if not vfd.g120.get_state():
                 vfd.g120.connect()
         if sec == 0:
+            file_name = datetime.now() + '.vfd'
             print '******************************'
             print 'start_getting_state'
             print '******************************'
             # print vfd.g120.get_state()
             # vfd = VFDControl()
-            for i in range(5):
-                print '******************************'
-                print i
-                print '******************************'
+            for i in range(10):
                 time.sleep(0.04)
-                print datetime.now()
-                print '-------------'
-                print vfd.g120.get_state()['active_power']
+                vfd.power_data['power_time'].append(datetime.now());
+                vfd.power_data.['power'].append(vfd.g120.get_state()['active_power']);
+            with open(file_name, 'w') as fp:
+                json.dump(vfd.power_data, fp)
+            vfd.power_data['power'] = []
+            vfd.power_data['power_time'] = []
 
 def start_socket_server():
     rl = configure_logging(df.LOG_FILE_NAME)
