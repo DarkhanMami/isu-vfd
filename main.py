@@ -433,9 +433,6 @@ def start_socket_server():
                 print 'get_power'
                 print '******************************'
                 for i in range(10):
-                    print '******************************'
-                    print i
-                    print '******************************'
                     time.sleep(0.05)
                     print vfd.g120.get_state()['active_power']
                 
@@ -445,97 +442,6 @@ def start_socket_server():
                 UDPServerSocket.sendto(bytesToSend, address)
 
 if __name__ == "__main__":
-    # rl = configure_logging(df.LOG_FILE_NAME)
-    # rl.info('Version = %s' % product_version())
-    # # get_iface_settings()
-    # # vfd = VFDControl()
-    # power = []
-
-    # localIP = "0.0.0.0"
-    # localPort = 6666
-    # bufferSize = 1024
-
-    # UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-    # UDPServerSocket.bind((localIP, localPort))
-
-    # with GracefulInterruptHandler() as h, PidFile(VFD_PID) as p:
-        
-    #     while (True):
-    #         if h.interrupted:
-    #             rl.debug('Got SIGINT. Stopping threads...')
-    #             break
-
-    #         bytesAddressPair = UDPServerSocket.recvfrom(bufferSize)
-
-    #         get_iface_settings()
-    #         vfd = VFDControl()
-
-    #         # rl.debug('Get VFD state')
-    #         # vfd.get_vfd_state()
-
-
-    #         message = bytesAddressPair[0]
-    #         address = bytesAddressPair[1]
-    #         print message
-    #         print address
-    #         data = str(message.decode("utf-8")).split(' ')
-    #         post_msg = dict()
-    #         post_msg['data'] = str(message.decode("utf-8"))
-    #         print data
-    #         if 'start' in data[0]:
-    #             print '******************************'
-    #             print 'start'
-    #             print data
-    #             print '******************************'
-    #             vfd.g120.set_rpn(100)
-    #             vfd.g120.send_telegram()
-    #             # headers = {'Content-Type': 'application/json'}
-    #             # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
-    #             # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
-    #             # msgFromServer = ">pet<"
-    #             # bytesToSend = str.encode(msgFromServer)
-    #             # UDPServerSocket.sendto(bytesToSend, address)
-
-    #             # clientIP = "Client IP Address:{}".format(address)
-    #         elif 'stop' in data[0]:
-    #             vfd.g120.stop()
-    #             vfd.g120.send_telegram()
-    #             # headers = {'Content-Type': 'application/json'}
-    #             # url = 'http://91.245.226.161:4000/api/v1/pet_data/'
-    #             # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
-    #             # msgFromServer = ">pet<"
-    #             # bytesToSend = str.encode(msgFromServer)
-    #             # UDPServerSocket.sendto(bytesToSend, address)
-    #         elif 'set_rpn' in data[0]:
-    #             print '******************************'
-    #             print 'set_rpn'
-    #             print int(data[1])
-    #             print '******************************'
-    #             vfd.g120.set_rpn(int(data[1]))
-    #             vfd.g120.send_telegram()
-    #             # headers = {'Content-Type': 'application/json'}
-    #             # url = 'http://91.245.226.161:4000/api/v1/skv_data/'
-    #             # res = requests.post(url, data=json.dumps(post_msg), headers=headers)
-    #             # msgFromServer = ">skv<"
-    #             # bytesToSend = str.encode(msgFromServer)
-    #             # UDPServerSocket.sendto(bytesToSend, address)
-    #         elif 'get_power' in data[0]:
-    #             print '******************************'
-    #             print 'get_power'
-    #             print '******************************'
-    #             for i in range(10):
-    #                 print '******************************'
-    #                 print i
-    #                 print '******************************'
-    #                 time.sleep(0.05)
-    #                 print vfd.g120.get_state()['active_power']
-                
-    #         else:
-    #             msgFromServer = ">error<"
-    #             bytesToSend = str.encode(msgFromServer)
-    #             UDPServerSocket.sendto(bytesToSend, address)
-
-            
     p1 = Process(target=start_getting_state)
     p1.start()
     p2 = Process(target=start_socket_server)
