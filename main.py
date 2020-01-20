@@ -345,7 +345,7 @@ def start_getting_state():
             # vfd = VFDControl()
             for i in range(10):
                 time.sleep(0.04)
-                vfd.power_data['power_time'].append(datetime.now());
+                vfd.power_data['power_time'].append(datetime.now().strftime("%Y_%m_%d %H:%M:%S.%f"));
                 vfd.power_data['power'].append(vfd.g120.get_state()['active_power']);
             with open(file_name, 'w') as fp:
                 json.dump(vfd.power_data, fp)
